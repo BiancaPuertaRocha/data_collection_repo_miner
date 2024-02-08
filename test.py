@@ -7,7 +7,7 @@ miner.get_fixing_commits()
 miner.get_fixed_files()
 failure_prone_files = miner.label()
 
-metrics_extractor = PythonMetricsExtractor('tmp/pyspider', at='release')
+metrics_extractor = PythonMetricsExtractor('tmp/pyspider', at='commit')
 metrics_extractor.extract(failure_prone_files)
 metrics_extractor.to_csv('metrics.csv')
 

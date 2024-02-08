@@ -1,7 +1,7 @@
 from repominer.mining.ansible import AnsibleMiner
 from repominer.metrics.ansible import AnsibleMetricsExtractor
     
-miner = AnsibleMiner(url_to_repo='https://github.com/adriagalin/ansible.motd', clone_repo_to='tmp') 
+miner = AnsibleMiner(url_to_repo='https://github.com/adriagalin/ansible.motd.git', clone_repo_to='tmp') 
 miner.get_fixing_commits()
 miner.get_fixed_files()
 failure_prone_files = miner.label()
