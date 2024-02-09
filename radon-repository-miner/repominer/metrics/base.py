@@ -34,7 +34,6 @@ def get_content(path: str) -> Union[str, None]:
     """
     if not os.path.isfile(path):
         return None
-
     try:
         with open(path, 'r') as f:
             return f.read()
@@ -143,8 +142,9 @@ class BaseMetricsExtractor:
             for filename in filenames:
                 path = os.path.join(root, filename)
                 path = path.replace(self.path_to_repo, '')
-                if path.startswith('/'):
+                if path.startswith('\\'):
                     path = path[1:]
+                path = path.replace('\\', '\\\\')  # Replace single backslashes with double backslashes
 
                 files.add(path)
 
@@ -255,12 +255,9 @@ class BaseMetricsExtractor:
                 process_metrics = self.get_process_metrics(from_previous_commit, to_current_commit)
 
             for filepath in self.get_files():
-
                 file_content = get_content(os.path.join(self.path_to_repo, filepath))
-
                 if not file_content or self.ignore_file(filepath, file_content):
                     continue
-
                 tmp = FailureProneFile(filepath=filepath, commit=commit.hash, fixing_commit='')
                 if tmp not in labeled_files:
                     label = 0  # clean
@@ -310,7 +307,7 @@ class BaseMetricsExtractor:
 
                     metrics_previous_release[filepath] = metrics.copy()
                     metrics.update(delta_metrics)
-
+                    
                 self.dataset = self.dataset.append(metrics, ignore_index=True)
 
             git_repo.reset()
